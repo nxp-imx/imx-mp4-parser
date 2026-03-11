@@ -1,0 +1,71 @@
+/*
+ ***********************************************************************
+ * Copyright (c) 2014, Freescale Semiconductor Inc.,
+ * Copyright 2026 NXP
+ * SPDX-License-Identifier: BSD-3-Clause
+ ***********************************************************************
+ */
+
+#include <stdlib.h>
+#include <string.h>
+#include "MP4Atoms.h"
+
+static void destroy(MP4AtomPtr s) {
+    MP4HVCCAtomPtr self;
+    self = (MP4HVCCAtomPtr)s;
+
+    if (self->data) {
+        MP4LocalFree(self->data);
+        self->data = NULL;
+    }
+    if (self->super)
+        self->super->destroy(s);
+}
+
+static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStreamPtr inputStream) {
+    MP4Err err;
+    u32 bytesToRead;
+    MP4HVCCAtomPtr self = (MP4HVCCAtomPtr)s;
+
+    err = MP4NoErr;
+    if (self == NULL)
+        BAILWITHERROR(MP4BadParamErr)
+    err = self->super->createFromInputStream(s, proto, (char*)inputStream);
+
+    bytesToRead = (u32)(s->size - s->bytesRead);
+
+    if (bytesToRead > 0) {
+        self->data = (u8*)MP4LocalCalloc(1, bytesToRead);
+        TESTMALLOC(self->data)
+        GETBYTES_MSG(bytesToRead, data, "HEVC");
+        self->dataSize = bytesToRead;
+    }
+bail:
+    TEST_RETURN(err);
+
+    return err;
+}
+
+MP4Err MP4CreateHvccAtom(MP4HVCCAtomPtr* outAtom) {
+    MP4Err err;
+    MP4HVCCAtomPtr self;
+
+    self = (MP4HVCCAtomPtr)MP4LocalCalloc(1, sizeof(MP4HVCCAtom));
+    TESTMALLOC(self)
+
+    err = MP4CreateBaseAtom((MP4AtomPtr)self);
+    if (err)
+        goto bail;
+
+    self->name = "Hevc";
+    self->destroy = destroy;
+    self->createFromInputStream = (cisfunc)createFromInputStream;
+    self->data = NULL;
+    self->dataSize = 0;
+
+    *outAtom = self;
+bail:
+    TEST_RETURN(err);
+
+    return err;
+}
