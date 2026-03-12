@@ -15,10 +15,10 @@
 #ifndef FSL_MP4_PARSER_API_HEADER_INCLUDED
 #define FSL_MP4_PARSER_API_HEADER_INCLUDED
 
-#include "common/fsl_types.h"
-#include "common/file_stream.h"
-#include "common/fsl_media_types.h"
-#include "common/fsl_parser.h"
+#include "fsl_types.h"
+#include "file_stream.h"
+#include "fsl_media_types.h"
+#include "fsl_parser.h"
 
 
 /***************************************************************************************
