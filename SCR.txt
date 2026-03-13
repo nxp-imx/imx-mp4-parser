@@ -11,5 +11,7 @@ Description and comments:  i.MX multimedia parser libraries
                            Parsers for: MP4
 Origin:                    NXP (BSD-3-Clause)
                            ISO/IEC MPEG-4 Reference Code (MPEG-4 free license)
+                           Charset.c.c unicode convert function(Unicode-DFS-2016)
+                           MP4MemMgr.c Android - platform - external - srec(Apache-2.0)
 
 --------------------------------------------
