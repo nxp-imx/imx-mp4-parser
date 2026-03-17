@@ -11,6 +11,9 @@ add_project_arguments(
   language: 'c'
 )
 
+cc = meson.get_compiler('c')
+libm = cc.find_library('m', required: true)
+
 imx_parser_dep = dependency('imx-parser', required: true)
 
 lib_mp4 = shared_library(
@@ -19,7 +22,7 @@ lib_mp4 = shared_library(
   include_directories : inc_priv,
   name_prefix         : 'lib_',
   soversion           : '3.1',
-  dependencies        : imx_parser_dep,
+  dependencies        : [imx_parser_dep, libm],
   c_args              : ['-DCORE_PARSER_PARSE_H264_DEC_SPECIFIC_INFO',
                          '-D_POSIX_C_SOURCE=200809L',
                           '-I' + sysroot + '/usr/include/imx-mm/parser'],
