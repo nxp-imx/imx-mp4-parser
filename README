@@ -1,0 +1,5 @@
+This is source code NXP i.MX MP4 parser library
+It has dependency on imx-parser
+
+Library installation directory:
+    /usr/lib/imx-mm/parser
