@@ -21,7 +21,7 @@ lib_mp4 = shared_library(
   srcs,
   include_directories : inc_priv,
   name_prefix         : 'lib_',
-  soversion           : '3.1',
+  soversion           : '3.2',
   dependencies        : [imx_parser_dep, libm],
   c_args              : ['-DCORE_PARSER_PARSE_H264_DEC_SPECIFIC_INFO',
                          '-D_POSIX_C_SOURCE=200809L',
