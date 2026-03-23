@@ -29,7 +29,7 @@
 /*--------------------------------- Version Infomation --------------------------------*/
 #define SEPARATOR " "
 
-#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.00"
+#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.01"
 
 #if defined(__WINCE)
 #define OS_NAME "_WINCE"
@@ -3086,10 +3086,13 @@ static int32 getTrackNextSample(FslParserHandle parserHandle, uint32 trackNum,
         sampleTs += ((MP4TrackAtomPtr)(stream->trak))->elstInitialEmptyEditTicks;
         elstShiftStartTicks = ((MP4TrackAtomPtr)(stream->trak))->elstShiftStartTicks;
 
-#ifndef ANDROID  // linux doens't support negative ts
-        if (elstShiftStartTicks <= sampleTs)
+// linux doens't support negative ts
+#ifdef ANDROID
+            sampleTs -= (int64)elstShiftStartTicks;
+#else
+            if (elstShiftStartTicks <= sampleTs)
+                sampleTs -= elstShiftStartTicks;
 #endif
-            sampleTs -= elstShiftStartTicks;
 
         *usStartTime = sampleTs * 1000 * 1000 / stream->timeScale;
 
@@ -4198,10 +4201,12 @@ static int32 seekTrack(FslParserHandle parserHandle, uint32 trackNum, uint32 fla
 
     if (ctts) {
         s32 ptsOffset;
+        int64 sample_ts = (int64)sampleTime;
         err = ctts->getOffsetForSampleNumber((MP4AtomPtr)ctts, sampleNumber, &ptsOffset);
         if (err)
             goto bail;
-        sampleTime += ptsOffset;
+        sample_ts += ptsOffset;
+        sampleTime = (uint64)sample_ts;
         MP4MSG("ctts ptsOffset %d, updated sampleTime %lld\n", ptsOffset, sampleTime);
     }
 
@@ -4431,7 +4436,7 @@ static int32 buildSamplePtsTable(MP4SampleTableAtomPtr stbl, sSamplePtsEntry** s
             if (err)
                 goto bail;
         }
-        ptsTable[i].pts = sampleDts + ptsOffset;
+        ptsTable[i].pts = (uint64)((int64)sampleDts + ptsOffset);
         ptsTable[i].index = i + 1;  // sample number is 1-based
         //    MP4MSG("index %d, dts %lld, offset %d, pts %lld",
         //        i, (long long)sampleDts, ptsOffset, (long long)ptsTable[i].pts);

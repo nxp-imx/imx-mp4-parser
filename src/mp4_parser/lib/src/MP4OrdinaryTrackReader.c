@@ -163,7 +163,7 @@ static MP4Err getNextAccessUnit(struct MP4TrackReaderStruct* self, MP4Handle out
     *outDTS = sampleDTS + self->segmentBeginTime;
 
     if (sampleFlags & MP4MediaSampleHasCTSOffset)
-        *outCTS = *outDTS + sampleCTSOffset;
+        *outCTS = (u64)((s64)(*outDTS) + sampleCTSOffset);
     else
         *outCTS = *outDTS;
 
