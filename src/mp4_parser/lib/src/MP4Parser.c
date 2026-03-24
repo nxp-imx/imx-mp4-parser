@@ -431,6 +431,7 @@ EXTERN int32 FslParserQueryInterface(uint32 id, void** func) {
             break;
         case PARSER_API_GET_IMAGE_INFO:
             *func = MP4GetImageInfo;
+            break;
         default:
             break; /* no support for other API */
     }

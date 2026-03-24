@@ -329,7 +329,6 @@ static MP4Err finishScan(MP4AtomPtr s) {
     u32 maxSampleSize;
     LONGLONG totalBytes;
     s64 fileOffset;
-    u32 sampleCount;
 
     if (self->scanFinished)
         goto bail;
@@ -348,7 +347,6 @@ static MP4Err finishScan(MP4AtomPtr s) {
         TESTMALLOC(tmp_buffer)
     }
 
-    sampleCount = STZ2_TAB_MAX_SIZE;
     fileOffset = self->tab_file_offset + STZ2_TAB_MAX_SIZE * self->fieldSize / 8;
     while (nb_entires_to_read) {
         if (nb_entires_to_read > STZ2_TAB_MAX_SIZE)
@@ -374,7 +372,7 @@ static MP4Err finishScan(MP4AtomPtr s) {
 
             if (maxSampleSize < sampleSize) {
                 if (MP4_MAX_SAMPLE_SIZE < sampleSize) {
-                    MP4MSG("samp %d, invalid size %d (2)\n", sampleCount, sampleSize);
+                    MP4MSG("invalid size %d (2)\n", sampleSize);
                     BAILWITHERROR(MP4_ERR_WRONG_SAMPLE_SIZE)
                 }
                 maxSampleSize = sampleSize;
@@ -382,7 +380,6 @@ static MP4Err finishScan(MP4AtomPtr s) {
             entries++;
             if (self->fieldSize == 16)
                 entries++;
-            sampleCount++;
         }
 
         nb_entires_to_read -= entry_cnt;

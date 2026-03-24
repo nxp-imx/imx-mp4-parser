@@ -280,8 +280,6 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     MP4Err err = MP4NoErr;
     MP4TimeToSampleAtomPtr self = (MP4TimeToSampleAtomPtr)s;
 
-    u32 entryCountLoaded = 0; /* for debug only */
-
     u32 entry_cnt;          /* number of entries in one loading */
     u32 entries_total_size; /* bytes of entries in one loading */
     MP4FileMappingInputStreamPtr stream = (MP4FileMappingInputStreamPtr)inputStream;
@@ -291,7 +289,6 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     u32 sampleCount;
     u32 sampleDuration;
 
-    u32 totalSampleCount = 0;
     u64 toatalDuration = 0;
 
     u64* tmp_buffer = NULL;
@@ -373,11 +370,7 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     for (i = 0; i < entry_cnt; i++) {
         sampleCount = entries->sampleCount;
         sampleDuration = entries->sampleDuration;
-        totalSampleCount += sampleCount;
         toatalDuration += (u64)sampleCount * sampleDuration;
-        // MP4MSG("stts: entry %ld, sample count %ld, duration %ld\n", entryCountLoaded,
-        // sampleCount, sampleDuration);
-        entryCountLoaded++;
 
         entries++;
     }
@@ -409,11 +402,7 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
         for (i = 0; i < entry_cnt; i++) {
             sampleCount = entries->sampleCount;
             sampleDuration = entries->sampleDuration;
-            totalSampleCount += sampleCount;
             toatalDuration += (u64)sampleCount * sampleDuration;
-            // MP4MSG("stts: entry %ld, sample count %ld, duration %ld\n", entryCountLoaded,
-            // sampleCount, sampleDuration);
-            entryCountLoaded++;
 
             entries++;
         }
@@ -421,8 +410,7 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     }
 
     self->totalDuration = toatalDuration;
-    MP4MSG("stts: total sample count %d, total duration %lld\n", totalSampleCount,
-           self->totalDuration);
+    MP4MSG("stts: total duration %lld\n", self->totalDuration);
 
 bail:
     TEST_RETURN(err);

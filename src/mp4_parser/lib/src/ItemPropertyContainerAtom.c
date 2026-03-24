@@ -50,7 +50,6 @@ bail:
 static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStreamPtr inputStream) {
     MP4Err err = MP4NoErr;
     u64 beginAvail = 0;
-    u32 propertyIndex = 1;
     ItemPropertyContainerAtomPtr self = (ItemPropertyContainerAtomPtr)s;
 
     if (self == NULL)
@@ -91,7 +90,7 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
             goto bail;
         bytesParsed += 4L;
         MP4TypeToString(atomProto->type, typeString);
-        MP4MSG("property %d type %s\n", propertyIndex, typeString);
+        MP4MSG("property type %s\n", typeString);
 
         /* large atom */
         if (atomProto->size == 1) {
@@ -125,7 +124,6 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
             goto bail;
         self->bytesRead += atomProto->size;
 
-        propertyIndex++;
     }
 
     if (self->bytesRead > self->size) {

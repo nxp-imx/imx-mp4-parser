@@ -820,7 +820,6 @@ bail:
 static MP4Err findMoofAtom(FragmentedReaderStruct* reader, MP4InputStreamPtr inputStream,
                            char* headerBuf) {
     MP4Err err = PARSER_SUCCESS;
-    u32 distance = 0;
     bool possibleHeader = FALSE;
     u32 i = 0;
     u32 readNum = 0;
@@ -868,12 +867,11 @@ static MP4Err findMoofAtom(FragmentedReaderStruct* reader, MP4InputStreamPtr inp
         err = inputStream->readData(inputStream, readNum, headerBuf + 8 - readNum, NULL);
         if (err)
             goto bail;
-        distance += readNum;
+
     } while (1);
 
     t = clock() - t;
-    MP4MSG("%s moof atom found at distance %d, consume %f seconds\n", type, distance,
-           (float)t / CLOCKS_PER_SEC);
+    MP4MSG("%s moof atom found at consume %f seconds\n", type, (float)t / CLOCKS_PER_SEC);
 
 bail:
     return err;
