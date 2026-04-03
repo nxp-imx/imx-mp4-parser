@@ -29,7 +29,7 @@
 /*--------------------------------- Version Infomation --------------------------------*/
 #define SEPARATOR " "
 
-#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.01"
+#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.02"
 
 #if defined(__WINCE)
 #define OS_NAME "_WINCE"
@@ -4207,7 +4207,8 @@ static int32 seekTrack(FslParserHandle parserHandle, uint32 trackNum, uint32 fla
         if (err)
             goto bail;
         sample_ts += ptsOffset;
-        sampleTime = (uint64)sample_ts;
+        if (sample_ts > 0)
+            sampleTime = (uint64)sample_ts;
         MP4MSG("ctts ptsOffset %d, updated sampleTime %lld\n", ptsOffset, sampleTime);
     }
 
@@ -4378,7 +4379,7 @@ EXTERN int32 MP4GetSampleInfo(FslParserHandle parserHandle, uint32 trackNum,
         BAILWITHERROR(PARSER_ERR_UNKNOWN)
 
     *sampleFileOffset = stream->curReadingSampleFileOffset;
-    if (stream->lastSampleNumberInChunk == stream->nextSampleNumber - 1)
+    if (stream->lastSampleNumberInChunk + 1 == stream->nextSampleNumber)
         *lastSampleIndexInChunk =
                 stream->lastSampleNumberInChunk - 1;  // internal sample index is 1-based
     else

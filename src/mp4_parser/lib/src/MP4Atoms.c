@@ -1135,19 +1135,29 @@ MP4Err MP4ParseAtomUsingProtoList(MP4InputStreamPtr inputStream, u32* protoList,
     inputStream->msg(inputStream, msgString);
 #endif
     err = newAtom->createFromInputStream(newAtom, atomProto, (char*)inputStream);
-    if (err && (MP4EOF !=
-                err)) { /*ENGR56127: entire atoms may still ends with MP4EOF.
-                        So corrupt file header shall return value other than MP4EOF.
-                        BLR code uses "inputStream->available==0" for EOF checking, same effect.*/
+    /* ENGR56127: entire atoms may still ends with MP4EOF.
+     * So corrupt file header shall return value other than MP4EOF.
+     * BLR code uses "inputStream->available==0" for EOF checking, same effect.
+    */
+    if (err && (MP4EOF != err)) {
         goto bail;
     }
 
-    consumedBytes = beginAvail - inputStream->available;
+    /* Safety check: prevent unsigned integer underflow when available > beginAvail
+     * This can happen with corrupted files or parsing errors */
+    if (inputStream->available > beginAvail) {
+        MP4MSG("Warning: available (%llu) > beginAvail (%llu), stream corruption detected\n",
+               inputStream->available, beginAvail);
+        consumedBytes = 0;
+    } else {
+        consumedBytes = beginAvail - inputStream->available;
+    }
     if ((consumedBytes != atomProto->size) && (!(inputStream->stream_flags & live_flag))) {
         /* ERROR CONCEALMENT: wrong atom size, seek to the end of atom */
         s32 offset = (s32)((s64)atomProto->size - (s64)consumedBytes);
         inputStream->file_offset += offset;
-        inputStream->available -= offset;
+        if ((s64)inputStream->available >= offset)
+            inputStream->available -= offset;
         atomProto->bytesRead = atomProto->size;
 
 #ifndef COLDFIRE
