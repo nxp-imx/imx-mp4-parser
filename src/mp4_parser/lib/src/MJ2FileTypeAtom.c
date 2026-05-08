@@ -62,7 +62,7 @@ bail:
 static ISOErr createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStreamPtr inputStream) {
     ISOErr err;
     u32 items = 0;
-    u32 bytesToRead;
+    u32 bytesToRead = 0;
     MP4LinkedList brands;
     u32 count;
     s32 i;
@@ -82,7 +82,9 @@ static ISOErr createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     if ((self->brand & 0xFFFF0000) == 0x33670000)
         inputStream->stream_flags |= flag_3gp;
 
-    bytesToRead = (u32)(self->size - self->bytesRead);
+    if (self->size > self->bytesRead)
+        bytesToRead = (u32)(self->size - self->bytesRead);
+
     if (bytesToRead < sizeof(u32)) /* there must be at least one item in the compatibility list */
         BAILWITHERROR(ISOBadDataErr)
 

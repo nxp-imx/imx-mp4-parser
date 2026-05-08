@@ -66,7 +66,7 @@ bail:
 
 static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStreamPtr inputStream) {
     MP4Err err = MP4NoErr;
-    long bytesToRead;
+    long bytesToRead = 0;
     MP4ValueAtomPtr self = (MP4ValueAtomPtr)s;
 
     if (self == NULL)
@@ -79,7 +79,9 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     GET16(countryCode);
     GET16(languageCode);
 
-    bytesToRead = (long)(s->size - s->bytesRead);
+    if (self->size > self->bytesRead)
+        bytesToRead = (long)(s->size - s->bytesRead);
+
     if (bytesToRead > 0) {
         // size protection for CT 41748297
         if ((self->valueType > 0 && self->valueType <= QT_WELL_KNOWN_DATA_TYPE_UTF_16BE) &&

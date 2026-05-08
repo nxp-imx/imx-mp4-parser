@@ -59,7 +59,7 @@ bail:
 static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStreamPtr inputStream) {
     MP4Err err;
     TimedTextSampleEntryAtomPtr self = (TimedTextSampleEntryAtomPtr)s;
-
+    u32 bytesToRead = 0;
     err = MP4NoErr;
     if (self == NULL)
         BAILWITHERROR(MP4BadParamErr)
@@ -69,10 +69,17 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
 
     GETBYTES(6, reserved);
     GET16(dataReferenceIndex);
-    self->dataSize = (u32)(self->size - self->bytesRead);
-    self->data = (char*)MP4LocalMalloc(self->dataSize);
-    TESTMALLOC(self->data);
-    GETBYTES(self->dataSize, data);
+
+    if (self->size > self->bytesRead)
+        bytesToRead = (u32)(self->size - self->bytesRead);
+
+    if (bytesToRead > 0) {
+        self->data = (char*)MP4LocalMalloc(bytesToRead);
+        TESTMALLOC(self->data);
+        self->dataSize = bytesToRead;
+        GETBYTES(self->dataSize, data);
+    }
+
 bail:
     TEST_RETURN(err);
 

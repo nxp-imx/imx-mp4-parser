@@ -1098,7 +1098,7 @@ MP4Err MP4ParseAtomUsingProtoList(MP4InputStreamPtr inputStream, u32* protoList,
         bytesParsed += 8L;
     }
 
-    if (((s64)atomProto->size < 0) ||
+    if (((s64)atomProto->size < 8) ||
         (((atomProto->size - 8) > inputStream->available) &&
          (inputStream->stream_flags &
           mediadata_flag))) /* amanda: give some size error tolerance for 1st 'mdat'*/
@@ -1113,8 +1113,9 @@ MP4Err MP4ParseAtomUsingProtoList(MP4InputStreamPtr inputStream, u32* protoList,
     }
 
     atomProto->bytesRead = bytesParsed;
-    if ((s64)(atomProto->size - bytesParsed) < 0)
+    if ((u64)atomProto->size < bytesParsed)
         BAILWITHERROR(MP4BadDataErr)
+
     if (protoList) {
         while (*protoList) {
             if (*protoList == atomProto->type) {
@@ -1156,8 +1157,9 @@ MP4Err MP4ParseAtomUsingProtoList(MP4InputStreamPtr inputStream, u32* protoList,
         /* ERROR CONCEALMENT: wrong atom size, seek to the end of atom */
         s32 offset = (s32)((s64)atomProto->size - (s64)consumedBytes);
         inputStream->file_offset += offset;
+        // offset maybe less than 0
         if ((s64)inputStream->available >= offset)
-            inputStream->available -= offset;
+            inputStream->available = (u64)((s64)inputStream->available - offset);
         atomProto->bytesRead = atomProto->size;
 
 #ifndef COLDFIRE

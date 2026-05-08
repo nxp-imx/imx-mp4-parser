@@ -167,7 +167,12 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
         TESTMALLOC(key)
 
         GET32_V(key->keySize);
-        key->keySize -= 8; /* sizeof(keySize) + sizeof(keyNamespace) */
+        if (key->keySize >= 8)
+            key->keySize -= 8; /* sizeof(keySize) + sizeof(keyNamespace) */
+        else{
+            MP4LocalFree(key);
+            continue;
+        }
 
         GET32_V(key->keyNamespace);
 

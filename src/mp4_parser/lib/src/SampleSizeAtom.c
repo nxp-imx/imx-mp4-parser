@@ -416,6 +416,11 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     if (err)
         goto bail;
 
+    if (self->version != 0 || self->flags != 0){
+        MP4MSG("ERROR version=%d, flag=%x\n", self->version, self->flags);
+        BAILWITHERROR(MP4BadDataErr)
+    }
+
     GET32(sampleSize);
     GET32(sampleCount);
 
