@@ -167,8 +167,8 @@ static MP4Err readData(struct MP4InputStreamRecord* s, u32 bytes, void* outData,
                                                         self->mapping->parser_context);
                         char* temp = (char*)MP4LocalMalloc(self->file_offset);
                         TESTMALLOC(temp);
-                        MP4MSG("inputStream readData(%d): live mode seek offset %lld at pos %lld\n",
-                               bytes, self->file_offset, pos);
+                        MP4MSG("inputStream readData(%d): live mode seek offset %lld \n",
+                               bytes, self->file_offset);
                         MP4LocalReadFile(temp, sizeof(char), self->file_offset, (FILE*)self->ptr,
                                          self->mapping->parser_context);
                         MP4LocalFree(temp);

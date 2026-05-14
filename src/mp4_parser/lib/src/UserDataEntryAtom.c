@@ -36,6 +36,8 @@ derivative works. Copyright (c) 1999.
 #include "Charset.h"
 #include "MP4Atoms.h"
 
+#define MAX_ATOM_SIZE (0xFFFFFFFF)
+
 static void destroy(MP4AtomPtr s) {
     MP4UserDataEntryAtomPtr self;
     self = (MP4UserDataEntryAtomPtr)s;
@@ -97,6 +99,10 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
     GET16(languageCode);
 
     bytesToRead = (long)(s->size - s->bytesRead);
+
+    if (s->size > MAX_ATOM_SIZE || bytesToRead > MAX_ATOM_SIZE)
+        BAILWITHERROR(MP4BadParamErr)
+
     if (bytesToRead > 0) {
         self->data = (char*)MP4LocalCalloc(1, bytesToRead);
         TESTMALLOC(self->data)

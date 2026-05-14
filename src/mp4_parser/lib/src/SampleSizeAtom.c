@@ -129,8 +129,14 @@ static MP4Err getSampleSizeAndOffset(MP4AtomPtr s, u32 sampleNumber, u32* outSiz
 
     if (self->sampleSize) /* samples are the same size */
     {
+        u64 temp = 0;
         *outSize = self->sampleSize;
-        *outOffsetSize = (sampleNumber - startingSampleNumber) * self->sampleSize;
+        temp = (u64) self->sampleSize * (sampleNumber - startingSampleNumber);
+        if (temp < 0xFFFFFFFF) {
+            *outOffsetSize = (u32)temp;
+        } else {
+            BAILWITHERROR(MP4BadDataErr)
+        }
     } else /* samples have different sizes */
     {
         u32 i;
@@ -436,14 +442,14 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
         goto bail;
     }
 
-    // MP4MSG("stsz size %lld, sample size %d, sample count %d\n", self->size, self->sampleSize,
-    // self->sampleCount);
+    MP4MSG("stsz size %lld, sample size %u, sample count %d\n", self->size, self->sampleSize,
+     self->sampleCount);
 
     if (self->sampleSize) /* Samples have the same size */
     {
-        MP4MSG("All samples has same size %d\n", self->sampleSize);
+        MP4MSG("All samples has same size %u\n", self->sampleSize);
         self->maxSampleSize = self->sampleSize;
-        self->totalBytes = self->sampleSize * self->sampleCount;
+        self->totalBytes = (LONGLONG)self->sampleSize * self->sampleCount;
         self->scanFinished = TRUE;
     } else /* Samples have different sizes. Load in the table */
     {

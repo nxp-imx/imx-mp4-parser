@@ -824,6 +824,9 @@ static MP4Err findMoofAtom(FragmentedReaderStruct* reader, MP4InputStreamPtr inp
     u32 i = 0;
     u32 readNum = 0;
     clock_t t;
+    #ifdef DEBUG
+    const char * type = TYPE(reader->track_reader[0]->mediaType);
+    #endif
 
     err = inputStream->readData(inputStream, 8, headerBuf, NULL);
     if (err)
@@ -883,6 +886,9 @@ static MP4Err findAndParseMoofAtom(FragmentedReaderStruct* reader) {
     MP4InputStreamPtr inputStream = reader->inputStream;
     MP4AtomPtr anAtomPtr = NULL;
     MP4PrivateMovieRecordPtr moov = reader->moov;
+    #ifdef DEBUG
+    const char * type = TYPE(reader->track_reader[0]->mediaType);
+    #endif
 
     MP4MSG("%s findAndParseMoofAtom\n", TYPE(reader->track_reader[0]->mediaType));
 
