@@ -29,7 +29,7 @@
 /*--------------------------------- Version Infomation --------------------------------*/
 #define SEPARATOR " "
 
-#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.05"
+#define BASELINE_SHORT_NAME "MPEG4PARSER_07.00.07"
 
 #if defined(__WINCE)
 #define OS_NAME "_WINCE"

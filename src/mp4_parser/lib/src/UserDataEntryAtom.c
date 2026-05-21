@@ -100,7 +100,7 @@ static MP4Err createFromInputStream(MP4AtomPtr s, MP4AtomPtr proto, MP4InputStre
 
     bytesToRead = (long)(s->size - s->bytesRead);
 
-    if (s->size > MAX_ATOM_SIZE || bytesToRead > MAX_ATOM_SIZE)
+    if (s->size > MAX_ATOM_SIZE || bytesToRead < 0 || (u64)bytesToRead > MAX_ATOM_SIZE)
         BAILWITHERROR(MP4BadParamErr)
 
     if (bytesToRead > 0) {
