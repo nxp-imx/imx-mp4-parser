@@ -2,13 +2,13 @@
   "SPDXID": "SPDXRef-DOCUMENT",
   "spdxVersion": "SPDX-2.3",
   "creationInfo": {
-    "created": "2026-03-13T09:12:35Z",
+    "created": "2026-06-02T02:46:59Z",
     "creators": [
       "Organization: NXP"
     ],
     "licenseListVersion": "3.26"
   },
-  "name": "imx-mp4-parser-master",
+  "name": "imx-mp4-parser-lf-6.18.20-2.0.0",
   "dataLicense": "CC0-1.0",
   "hasExtractedLicensingInfos": [
     {
@@ -17,22 +17,22 @@
       "extractedText": "This software module was originally developed by Apple Computer, Inc. in the course of development of MPEG-4. This software module is an implementation of a part of one or more MPEG-4 tools as specified by MPEG-4. ISO/IEC gives users of MPEG-4 free license to this software module or modifications thereof for use in hardware or software products claiming conformance to MPEG-4. Those intending to use this software module in hardware or software products are advised that its use may infringe existing patents. The original developer of this software module and his/her company, the subsequent editors and their companies, and ISO/IEC have no liability for use of this software module or modifications thereof in an implementation. Copyright is not released for non MPEG-4 conforming products. Apple Computer, Inc. retains full right to use the code for its own purpose, assign or donate the code to a third party and to inhibit third parties from using the code for non MPEG-4 conforming products. This copyright notice must be included in all copies or derivative works."
     }
   ],
-  "documentNamespace": "https://nxp.com/spdx/6a665b04-8fc7-419f-835e-26377d5e8c29",
+  "documentNamespace": "https://nxp.com/spdx/636c2e75-4977-46fb-aec7-6eba55555eac",
   "packages": [
     {
-      "SPDXID": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29",
+      "SPDXID": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac",
       "name": "imx-mp4-parser",
-      "versionInfo": "master",
-      "licenseConcluded": "(BSD-3-Clause)",
-      "licenseDeclared": "(BSD-3-Clause)",
-      "downloadLocation": "https://github.com/nxp-imx/imx-mp4-parser",
+      "versionInfo": "lf-6.18.20-2.0.0",
+      "licenseConcluded": "BSD-3-Clause",
+      "licenseDeclared": "BSD-3-Clause",
+      "downloadLocation": "https://github.com/nxp-imx/imx-mp4-parser -b lf-6.18.20-2.0.0",
       "originator": "Organization: NXP and ISO/IEC MPEG-4 Reference Code",
       "supplier": "NOASSERTION",
       "externalRefs": [],
       "filesAnalyzed": false
     },
     {
-      "SPDXID": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---b6abd442-1017-47b5-a5cb-b16f8fa352a1",
+      "SPDXID": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---b6abd442-1017-47b5-a5cb-b16f8fa352a1",
       "name": "Android - platform - external - srec",
       "versionInfo": "android-1.0",
       "licenseConcluded": "Apache-2.0",
@@ -51,7 +51,7 @@
       "filesAnalyzed": false
     },
     {
-      "SPDXID": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---51caa23d-5f72-4813-ad74-9399a6bb8a54",
+      "SPDXID": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---51caa23d-5f72-4813-ad74-9399a6bb8a54",
       "name": "Apple MPEG4 Standard",
       "versionInfo": "Unspecified",
       "licenseConcluded": "LicenseRef-cc29e171-5ac0-412b-b10c-a8232797f1e6",
@@ -63,7 +63,7 @@
       "filesAnalyzed": false
     },
     {
-      "SPDXID": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---5b22f7f0-0102-4bae-9ff6-ede03e37d3e5",
+      "SPDXID": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---5b22f7f0-0102-4bae-9ff6-ede03e37d3e5",
       "name": "unicode-data",
       "versionInfo": "5.0.0",
       "licenseConcluded": "Unicode-DFS-2016",
@@ -80,22 +80,22 @@
     {
       "spdxElementId": "SPDXRef-DOCUMENT",
       "relationshipType": "DESCRIBES",
-      "relatedSpdxElement": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29"
+      "relatedSpdxElement": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac"
     },
     {
-      "spdxElementId": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29",
+      "spdxElementId": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac",
       "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---51caa23d-5f72-4813-ad74-9399a6bb8a54"
+      "relatedSpdxElement": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---51caa23d-5f72-4813-ad74-9399a6bb8a54"
     },
     {
-      "spdxElementId": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29",
+      "spdxElementId": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac",
       "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---5b22f7f0-0102-4bae-9ff6-ede03e37d3e5"
+      "relatedSpdxElement": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---5b22f7f0-0102-4bae-9ff6-ede03e37d3e5"
     },
     {
-      "spdxElementId": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29",
+      "spdxElementId": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac",
       "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-package-6a665b04-8fc7-419f-835e-26377d5e8c29---b6abd442-1017-47b5-a5cb-b16f8fa352a1"
+      "relatedSpdxElement": "SPDXRef-package-636c2e75-4977-46fb-aec7-6eba55555eac---b6abd442-1017-47b5-a5cb-b16f8fa352a1"
     }
   ]
 }
